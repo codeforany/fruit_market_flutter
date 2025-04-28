@@ -20,8 +20,8 @@ Whether you’re a beginner or an experienced Flutter developer, this tutorial w
 
 If you find this tutorial valuable, show your support by liking, sharing it with fellow developers, and subscribing to our channel. Join our community of developers and master the art of creating complex, real-world apps!
 
-UI UX App Design by: Zikar Patel
-https://www.behance.net/patelzikar?ref=uistore.design
+UI UX App Design by: Manish Chutake
+https://www.behance.net/gallery/115391773/Fruit-Market-Online-Delivery-App-UI-kit
 
 #FruitMarketApp #FlutterAppDevelopment #OnlineDeliveryApp #FlutterEcommerce #FruitDeliveryApp #FlutterUI #FlutterTutorial #GroceryApp #EcommerceFlutter #FoodDeliveryApp #OnlineShoppingApp #FlutterDevelopment #MobileAppDesign #CleanArchitectureFlutter #CartManagementFlutter #FlutterFirebase #ModernUIFlutter #AppDesignFlutter #DeliveryAppFlutter #EcommerceUI #FlutterShoppingApp #FruitDelivery #FlutterDev #ResponsiveUIFlutter #GroceryDeliveryApp #OnlineFruitMarket #DartProgramming #FoodDeliveryUI #ShoppingAppUI #FlutterAppDesign
 
