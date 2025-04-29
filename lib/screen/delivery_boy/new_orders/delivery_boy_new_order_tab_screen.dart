@@ -4,6 +4,7 @@ import 'package:fruitmarket/common/color_extension.dart';
 import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
 import 'package:fruitmarket/common/service_call.dart';
+import 'package:fruitmarket/screen/delivery_boy/orders/delivery_boy_order_details_screen.dart';
 
 class DeliveryBoyNewOrdersTabScreen extends StatefulWidget {
   const DeliveryBoyNewOrdersTabScreen({super.key});
@@ -58,7 +59,7 @@ class _DeliveryBoyNewOrdersTabScreenState
 
                 return InkWell(
                   onTap: () async {
-                    // await context.push(OrderDetailScreen(obj: obj));
+                    await context.push(DeliveryBoyOrderDetailsScreen(obj: obj));
                     apiCallingOrderList();
                   },
                   child: Row(

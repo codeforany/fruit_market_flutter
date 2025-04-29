@@ -89,7 +89,8 @@ class SVKey {
   static const adminMainCategoryAdd = '$baseUrl/admin/main_category_add';
   static const adminMainCategoryUpdate = '$baseUrl/admin/main_category_update';
   static const adminMainCategoryDelete = '$baseUrl/admin/main_category_delete';
-  static const adminMainCategoryActiveInactive = '$baseUrl/admin/main_category_active_inactive';
+  static const adminMainCategoryActiveInactive =
+      '$baseUrl/admin/main_category_active_inactive';
 
   static const adminCategoryList = '$baseUrl/admin/category_list';
   static const adminCategoryAdd = '$baseUrl/admin/category_add';
@@ -112,8 +113,10 @@ class SVKey {
 
   static const adminItemNutritionList = '$baseUrl/admin/item_nutrition_list';
   static const adminItemNutritionAdd = '$baseUrl/admin/item_nutrition_add';
-  static const adminItemNutritionUpdate = '$baseUrl/admin/item_nutrition_update';
-  static const adminItemNutritionDelete = '$baseUrl/admin/item_nutrition_delete';
+  static const adminItemNutritionUpdate =
+      '$baseUrl/admin/item_nutrition_update';
+  static const adminItemNutritionDelete =
+      '$baseUrl/admin/item_nutrition_delete';
 
   static const adminItemPriceList = '$baseUrl/admin/item_price_list';
   static const adminItemPriceAdd = '$baseUrl/admin/item_price_add_update';
@@ -124,14 +127,19 @@ class SVKey {
   static const adminOfferUpdate = '$baseUrl/admin/offer_update';
   static const adminOfferDelete = '$baseUrl/admin/offer_delete';
 
-  static const adminDeliveryBoyUserList = '$baseUrl/admin/delivery_boy_user_list';
+  static const adminDeliveryBoyUserList =
+      '$baseUrl/admin/delivery_boy_user_list';
   static const adminDeliveryBoyUserAdd = '$baseUrl/admin/delivery_boy_create';
-  static const adminDeliveryBoyUserUpdate = '$baseUrl/admin/delivery_boy_update';
-  static const adminDeliveryBoyUserDelete = '$baseUrl/admin/delivery_boy_delete';
-  static const adminDeliveryBoyUserAssignOrder = '$baseUrl/admin/delivery_assign_order_for_delivery'; 
+  static const adminDeliveryBoyUserUpdate =
+      '$baseUrl/admin/delivery_boy_update';
+  static const adminDeliveryBoyUserDelete =
+      '$baseUrl/admin/delivery_boy_delete';
+  static const adminDeliveryBoyUserAssignOrder =
+      '$baseUrl/admin/delivery_assign_order_for_delivery';
 
   static const adminNewOrderList = '$baseUrl/admin/new_orders_list';
-  static const adminOrderItemAcceptReject = '$baseUrl/admin/order_item_accept_reject';
+  static const adminOrderItemAcceptReject =
+      '$baseUrl/admin/order_item_accept_reject';
 
   static const mainCategoryList = '$baseUrl/app/main_category_list';
   static const home = '$baseUrl/app/home';
@@ -150,6 +158,8 @@ class SVKey {
   static const myOrdersList = '$baseUrl/app/my_order_list';
 
   static const deliveryNewOrderList = '$baseUrl/app/deliver_boy_order_list';
+  static const deliveryBoyOrderOutForDelivery =
+      '$baseUrl/app/deliver_boy_order_out_for_deliver';
 }
 
 class KKey {
