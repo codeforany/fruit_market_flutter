@@ -49,5 +49,9 @@
 	<string>This app needs camera access to get profile image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs photos access to get profile image from photo library</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Please allow location for current location get on map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please allow location for current location get on map</string>
 </dict>
 </plist>
