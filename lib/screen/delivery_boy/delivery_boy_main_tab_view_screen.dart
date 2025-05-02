@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruitmarket/common/color_extension.dart';
+import 'package:fruitmarket/common/location_helper.dart';
 import 'package:fruitmarket/screen/delivery_boy/dashboard/delivery_boy_dashboard_tab_screen.dart';
 import 'package:fruitmarket/screen/delivery_boy/my_account/deliery_boy_my_account_tab_view_screen.dart';
 import 'package:fruitmarket/screen/delivery_boy/new_orders/delivery_boy_new_order_tab_screen.dart';
@@ -19,6 +20,9 @@ class _DeliveryBoyMainTabViewScreenState extends State<DeliveryBoyMainTabViewScr
 
   @override
   void initState() {
+
+    LocationHelper.shared().startInit();
+
     // TODO: implement initState
     super.initState();
     controller = TabController(length: 4, vsync: this);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fruitmarket/common/color_extension.dart';
 import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
+import 'package:fruitmarket/common/location_helper.dart';
 import 'package:fruitmarket/common/service_call.dart';
 import 'package:fruitmarket/common_widgets/round_button.dart';
 
@@ -11,10 +12,12 @@ class DeliveryBoyOrderDetailsScreen extends StatefulWidget {
   const DeliveryBoyOrderDetailsScreen({super.key, required this.obj});
 
   @override
-  State<DeliveryBoyOrderDetailsScreen> createState() => _DeliveryBoyOrderDetailsScreenState();
+  State<DeliveryBoyOrderDetailsScreen> createState() =>
+      _DeliveryBoyOrderDetailsScreenState();
 }
 
-class _DeliveryBoyOrderDetailsScreenState extends State<DeliveryBoyOrderDetailsScreen> {
+class _DeliveryBoyOrderDetailsScreenState
+    extends State<DeliveryBoyOrderDetailsScreen> {
   Map? dbObj;
 
   @override
@@ -57,11 +60,12 @@ class _DeliveryBoyOrderDetailsScreenState extends State<DeliveryBoyOrderDetailsS
                         fontSize: 17,
                         fontWeight: FontWeight.bold),
                   ),
-
                   Text(
-                     widget.obj["payment_type"] == 1 ? "COD" : "PREPAID" ,
+                    widget.obj["payment_type"] == 1 ? "COD" : "PREPAID",
                     style: TextStyle(
-                        color:  widget.obj["payment_type"] == 1 ? Colors.orange : Colors.green,
+                        color: widget.obj["payment_type"] == 1
+                            ? Colors.orange
+                            : Colors.green,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
@@ -248,7 +252,70 @@ class _DeliveryBoyOrderDetailsScreenState extends State<DeliveryBoyOrderDetailsS
                     });
                   },
                 ),
-              
+              if (widget.obj["order_status"] == 3)
+                Row(
+                  children: [
+                    Expanded(
+                      child: RoundButton(
+                        title: "Delivered",
+                        onPressed: () {
+
+                          mdShowAlertTowButton(
+                              Globs.appName, "Are you sura order are delivered?",
+                              () {
+                            apiCallingOrderDelivered({
+                              'order_id': widget.obj["order_id"].toString(),
+                              'item_order_id':
+                                  widget.obj["item_order_id"].toString(),
+                              'latitude':
+                                  ((LocationHelper.singleton.lastLocation)
+                                              ?.latitude)
+                                          ?.toString() ??
+                                      "0.0",
+                              'longitude':
+                                  ((LocationHelper.singleton.lastLocation)
+                                              ?.longitude)
+                                          ?.toString() ??
+                                      "0.0",
+                            });
+                          }, () {});
+
+                          
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: RoundButton(
+                        title: "Cancel",
+                        type: RoundButtonType.line,
+                        onPressed: () {
+                          mdShowAlertTowButton(
+                              Globs.appName, "Are you sura order are cancel?",
+                              () {
+                            apiCallingOrderDelivereCancel({
+                              'item_order_id':
+                                  widget.obj["item_order_id"].toString(),
+                              'latitude':
+                                  ((LocationHelper.singleton.lastLocation)
+                                              ?.latitude)
+                                          ?.toString() ??
+                                      "0.0",
+                              'longitude':
+                                  ((LocationHelper.singleton.lastLocation)
+                                              ?.longitude)
+                                          ?.toString() ??
+                                      "0.0",
+                              'reason': 'user are not accept delivery'
+                            });
+                          }, () {});
+                        },
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -308,9 +375,47 @@ class _DeliveryBoyOrderDetailsScreenState extends State<DeliveryBoyOrderDetailsS
       Globs.hideHUD();
       if (responseObj[KKey.status] == "1") {
         widget.obj["status"] = 3;
-        setState(() {
-          
+        setState(() {});
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {
+          context.pop();
         });
+      } else {
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {});
+      }
+    }, failure: (err) async {
+      Globs.hideHUD();
+      mdShowAlert(Globs.appName, err.toString(), () {});
+    });
+  }
+
+  void apiCallingOrderDelivered(Map<String, dynamic> parameter) {
+    Globs.showHUD();
+    ServiceCall.post(parameter, SVKey.deliveryBoyOrderDelivered,
+        isTokenApi: true, withSuccess: (responseObj) async {
+      Globs.hideHUD();
+      if (responseObj[KKey.status] == "1") {
+        widget.obj["order_status"] = 4;
+        setState(() {});
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {
+          context.pop();
+        });
+      } else {
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {});
+      }
+    }, failure: (err) async {
+      Globs.hideHUD();
+      mdShowAlert(Globs.appName, err.toString(), () {});
+    });
+  }
+
+  void apiCallingOrderDelivereCancel(Map<String, dynamic> parameter) {
+    Globs.showHUD();
+    ServiceCall.post(parameter, SVKey.deliveryBoyOrderDeliverCancel,
+        isTokenApi: true, withSuccess: (responseObj) async {
+      Globs.hideHUD();
+      if (responseObj[KKey.status] == "1") {
+        widget.obj["order_status"] = 6;
+        setState(() {});
         mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {
           context.pop();
         });

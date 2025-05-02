@@ -160,6 +160,10 @@ class SVKey {
   static const deliveryNewOrderList = '$baseUrl/app/deliver_boy_order_list';
   static const deliveryBoyOrderOutForDelivery =
       '$baseUrl/app/deliver_boy_order_out_for_deliver';
+  static const deliveryBoyOrderDelivered =
+      '$baseUrl/app/deliver_boy_order_delivered';
+  static const deliveryBoyOrderDeliverCancel =
+      '$baseUrl/app/delivery_boy_order_deliver_cancel';
 }
 
 class KKey {
