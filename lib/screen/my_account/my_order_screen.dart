@@ -3,6 +3,7 @@ import 'package:fruitmarket/common/color_extension.dart';
 import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
 import 'package:fruitmarket/common/service_call.dart';
+import 'package:fruitmarket/screen/my_account/my_order_detail_screen.dart';
 import 'package:fruitmarket/screen/my_account/my_order_row.dart';
 
 class MyOrderScreen extends StatefulWidget {
@@ -51,7 +52,10 @@ class _MyOrderScreenState extends State<MyOrderScreen> {
         itemBuilder: (context, index) {
           var obj = orderArr[index];
 
-          return MyOrderRow(obj: obj, onPressed: () {});
+          return MyOrderRow(obj: obj, onPressed: () async {
+              await context.push( MyOrderDetailScreen(obj: obj) );
+              apiList();
+          });
         },
         separatorBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
