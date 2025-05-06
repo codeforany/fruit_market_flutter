@@ -96,6 +96,7 @@ class _RatingPopupScreenState extends State<RatingPopupScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
             child: RoundButton(title: "Submit", onPressed: () {
+               context.pop();
                widget.didSubmit(txtMessage.text, rating);
             }),
           )

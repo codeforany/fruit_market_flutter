@@ -75,7 +75,7 @@ class _MyOrderDetailScreenState extends State<MyOrderDetailScreen> {
                 height: 8,
               ),
               Text(
-                "Name: ${ widget.obj["name"] } " ,
+                "Name: ${widget.obj["name"]} ",
                 style: TextStyle(
                   color: TColor.primaryText,
                   fontSize: 15,
@@ -243,15 +243,27 @@ class _MyOrderDetailScreenState extends State<MyOrderDetailScreen> {
               SizedBox(
                 height: 25,
               ),
-              if (widget.obj["order_status"] == 4 && ( (double.tryParse( widget.obj["rating"].toString() ) ?? 0.0) < 1.0 ) )
+              if (widget.obj["order_status"] == 4 &&
+                  ((double.tryParse(widget.obj["rating"].toString()) ?? 0.0) <
+                      1.0))
                 RoundButton(
                   title: "Rate",
                   onPressed: () {
+                    Navigator.push(
+                        context,
+                        PopupLayout(
+                            child: RatingPopupScreen(
+                          didSubmit: (message, rating) {
 
-                    Navigator.push(context, PopupLayout(child: RatingPopupScreen( didSubmit: (message, rating) {
-                      
-                    }, )  ) );
-                   
+                            apiCallingRatingAndReview({
+                              'item_id': widget.obj["item_id"].toString(),
+                              'item_order_id': widget.obj["item_order_id"].toString(),
+                              'rate': rating.toInt().toString(),
+                              'message': message
+                            });
+
+                          },
+                        )));
                   },
                 ),
             ],
@@ -306,5 +318,21 @@ class _MyOrderDetailScreenState extends State<MyOrderDetailScreen> {
   }
 
   //TODO: ApiCalling
-  
+  void apiCallingRatingAndReview(Map<String, dynamic> parameter) {
+    Globs.showHUD();
+    ServiceCall.post(parameter, SVKey.giveReview, isTokenApi: true,
+        withSuccess: (responseObj) async {
+      Globs.hideHUD();
+      if (responseObj[KKey.status] == "1") {
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {
+          context.pop();
+        });
+      } else {
+        mdShowAlert(Globs.appName, responseObj[KKey.message].toString(), () {});
+      }
+    }, failure: (err) async {
+      Globs.hideHUD();
+      mdShowAlert(Globs.appName, err.toString(), () {});
+    });
+  }
 }

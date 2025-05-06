@@ -156,6 +156,7 @@ class SVKey {
 
   static const orderPlace = '$baseUrl/app/order_place';
   static const myOrdersList = '$baseUrl/app/my_order_list';
+  static const giveReview = '$baseUrl/app/give_review';
 
   static const deliveryNewOrderList = '$baseUrl/app/deliver_boy_order_list';
   static const deliveryBoyOrderOutForDelivery =
