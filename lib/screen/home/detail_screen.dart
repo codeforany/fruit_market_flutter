@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fruitmarket/common/color_extension.dart';
 import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
@@ -17,6 +18,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   Map? detailObj;
   List nutritionArr = [];
+  List reviewArr = [];
 
   @override
   void initState() {
@@ -63,7 +65,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
               RoundButton(
-                  title: "Buy Now", width: 140, height: 44, onPressed: () {
+                  title: "Buy Now",
+                  width: 140,
+                  height: 44,
+                  onPressed: () {
                     apiCallingCartToAdd();
                   })
             ],
@@ -159,6 +164,96 @@ class _DetailScreenState extends State<DetailScreen> {
                   height: 12,
                 ),
                 itemCount: nutritionArr.length,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text(
+                "User Reviews",
+                style: TextStyle(
+                  color: TColor.primaryText,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  var nObj = reviewArr[index];
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: TColor.primary.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 40,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              nObj["name"].toString(),
+                              style: TextStyle(
+                                  color: TColor.primaryText,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            IgnorePointer(
+                              ignoring: true,
+                              child: RatingBar.builder(
+                                initialRating:
+                                    double.tryParse(nObj["rate"].toString()) ??
+                                        0.0,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 16,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 2.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.orange,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  print(rating);
+                                },
+                              ),
+                            ),
+                            Text(
+                              nObj["message"].toString(),
+                              style: TextStyle(
+                                color: TColor.secondaryText,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 12,
+                ),
+                itemCount: reviewArr.length,
               )
             ],
           ),
@@ -184,6 +279,7 @@ class _DetailScreenState extends State<DetailScreen> {
         if (responseObj[KKey.status].toString() == "1") {
           detailObj = responseObj[KKey.payload] as Map? ?? {};
           nutritionArr = detailObj?["nutrition_list"] as List ?? [];
+          reviewArr = detailObj?["review_list"] as List ?? [];
           if (mounted) {
             setState(() {});
           }
