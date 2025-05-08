@@ -110,6 +110,8 @@ class SVKey {
   static const adminItemUpdate = '$baseUrl/admin/item_update';
   static const adminItemDelete = '$baseUrl/admin/item_delete';
   static const adminItemImageUpdate = '$baseUrl/admin/item_update_image';
+  static const adminItemReviewList = '$baseUrl/admin/show_all_review_list';
+  static const adminItemReviewDelete = '$baseUrl/admin/review_delete';
 
   static const adminItemNutritionList = '$baseUrl/admin/item_nutrition_list';
   static const adminItemNutritionAdd = '$baseUrl/admin/item_nutrition_add';

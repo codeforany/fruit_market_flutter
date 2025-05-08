@@ -4,20 +4,19 @@ import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
 import 'package:fruitmarket/common/service_call.dart';
 import 'package:fruitmarket/screen/admin/items/admin_item_add_screen.dart';
-import 'package:fruitmarket/screen/admin/items/admin_item_review_list_screen.dart';
-import 'package:fruitmarket/screen/admin/items/admin_item_row.dart';
+import 'package:fruitmarket/screen/admin/items/admin_review_row.dart';
 
-class AdminItemListScreen extends StatefulWidget {
+class AdminItemReviewListScreen extends StatefulWidget {
   final Map obj;
-  const AdminItemListScreen({super.key, required this.obj});
+  const AdminItemReviewListScreen({super.key, required this.obj});
 
   @override
-  State<AdminItemListScreen> createState() => _AdminItemListScreenState();
+  State<AdminItemReviewListScreen> createState() =>
+      _AdminItemReviewListScreenState();
 }
 
-class _AdminItemListScreenState extends State<AdminItemListScreen> {
+class _AdminItemReviewListScreenState extends State<AdminItemReviewListScreen> {
   List itemArr = [];
-
 
   @override
   void initState() {
@@ -41,25 +40,13 @@ class _AdminItemListScreenState extends State<AdminItemListScreen> {
           ),
         ),
         title: Text(
-          "${widget.obj["main_cat_name"].toString()} Items",
+          widget.obj["item_name"].toString(),
           style: TextStyle(
             color: TColor.whiteText,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await context.push(AdminItemAddScreen());
-              // apiCallingList();
-            },
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          )
-        ],
       ),
       body: itemArr.isEmpty
           ? Center(
@@ -73,34 +60,18 @@ class _AdminItemListScreenState extends State<AdminItemListScreen> {
               ),
             )
           : ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               itemBuilder: (context, index) {
                 var obj = itemArr[index];
 
-                return AdminItemRow(
-                  obj: obj,
-                  onPressed: () {
-                    // context.push(AdminItemListScreen());
-                  },
-                  onEdit: () async {
-                    await context.push(AdminItemAddScreen(
-                      isEdit: true,
-                      obj: obj,
-                    ));
-                    apiCallingList();
-                  },
-                  onDelete: () {
-                    mdShowAlertTowButton(
-                        Globs.appName, "Are you sure want to delete?", () {
-                      apiCallDelete({
-                        'item_id': obj["item_id"].toString(),
-                      });
-                    }, () {});
-                  },
-                  onReview: () {
-                      context.push( AdminItemReviewListScreen(obj: obj) );
-                  },
-                );
+                return AdminReviewRow(obj: obj, onDelete: () {
+                  mdShowAlertTowButton(
+                          Globs.appName, "Are you sure want to delete?", () {
+                        apiCallDelete({
+                          'rate_id': obj["rate_id"].toString(),
+                        });
+                      }, () {});
+                });
               },
               separatorBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -119,8 +90,8 @@ class _AdminItemListScreenState extends State<AdminItemListScreen> {
     Globs.showHUD();
 
     ServiceCall.post(
-      {"main_cat_id": widget.obj["main_cat_id"].toString()},
-      SVKey.adminItemList,
+      {"item_id": widget.obj["item_id"].toString()},
+      SVKey.adminItemReviewList,
       isTokenApi: true,
       withSuccess: (responseObj) async {
         Globs.hideHUD();
@@ -146,7 +117,7 @@ class _AdminItemListScreenState extends State<AdminItemListScreen> {
 
     ServiceCall.post(
       parameter,
-      SVKey.adminItemDelete,
+      SVKey.adminItemReviewDelete,
       isTokenApi: true,
       withSuccess: (responseObj) async {
         Globs.hideHUD();
@@ -166,26 +137,5 @@ class _AdminItemListScreenState extends State<AdminItemListScreen> {
     );
   }
 
-  // void apiCallActiveInactive(Map<String, dynamic> parameter) {
-  //   Globs.showHUD();
-
-  //   ServiceCall.post(
-  //     parameter,
-  //     SVKey.adminMainCategoryActiveInactive,
-  //     isTokenApi: true,
-  //     withSuccess: (responseObj) async {
-  //       Globs.hideHUD();
-  //       if (responseObj[KKey.status] == "1") {
-  //         apiCallingList();
-  //       } else {
-  //         mdShowAlert(
-  //             Globs.appName, responseObj[KKey.message].toString(), () {});
-  //       }
-  //     },
-  //     failure: (error) async {
-  //       Globs.hideHUD();
-  //       mdShowAlert(Globs.appName, error.toString(), () {});
-  //     },
-  //   );
-  // }
+  
 }

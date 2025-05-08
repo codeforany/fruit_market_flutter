@@ -7,7 +7,7 @@ class AdminItemRow extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-  final VoidCallback onNutrition;
+  final VoidCallback onReview;
 
   const AdminItemRow(
       {super.key,
@@ -15,7 +15,7 @@ class AdminItemRow extends StatelessWidget {
       required this.onPressed,
       required this.onEdit,
       required this.onDelete,
-      required this.onNutrition});
+      required this.onReview});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class AdminItemRow extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: onNutrition,
+              onPressed: onReview,
               icon: Icon(
                 Icons.list,
                 color: Colors.green,

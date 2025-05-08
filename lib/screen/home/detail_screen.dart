@@ -5,6 +5,7 @@ import 'package:fruitmarket/common/color_extension.dart';
 import 'package:fruitmarket/common/common_extension.dart';
 import 'package:fruitmarket/common/globs.dart';
 import 'package:fruitmarket/common/service_call.dart';
+import 'package:fruitmarket/common_widgets/review_row.dart';
 import 'package:fruitmarket/common_widgets/round_button.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -183,72 +184,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  var nObj = reviewArr[index];
+                  var obj = reviewArr[index];
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: TColor.primary.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              nObj["name"].toString(),
-                              style: TextStyle(
-                                  color: TColor.primaryText,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            IgnorePointer(
-                              ignoring: true,
-                              child: RatingBar.builder(
-                                initialRating:
-                                    double.tryParse(nObj["rate"].toString()) ??
-                                        0.0,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 16,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 2.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  print(rating);
-                                },
-                              ),
-                            ),
-                            Text(
-                              nObj["message"].toString(),
-                              style: TextStyle(
-                                color: TColor.secondaryText,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
+                  return ReviewRow(obj: obj);
                 },
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 12,

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fruitmarket/common/color_extension.dart';
+import 'package:fruitmarket/screen/admin/dashboard/admin_dashboard_tab_screen.dart';
 import 'package:fruitmarket/screen/admin/my_account/admin_my_account_tab_screen.dart';
 import 'package:fruitmarket/screen/admin/order/new_order_list_screen.dart';
-import 'package:fruitmarket/screen/cart/cart_tab_screen.dart';
 import 'package:fruitmarket/screen/favorites/favorites_tab_screen.dart';
-import 'package:fruitmarket/screen/home/home_tab_screen.dart';
-import 'package:fruitmarket/screen/my_account/my_account_tab_screen.dart';
 
 class AdminMainTabViewScreen extends StatefulWidget {
   const AdminMainTabViewScreen({super.key});
@@ -36,7 +34,7 @@ class _AdminMainTabViewScreenState extends State<AdminMainTabViewScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabBarView(controller: controller, children: [
-        HomeTabScreen(),
+        AdminDashboardTabScreen(),
         NewOrderListScreen(),
         FavoritesTabScreen(),
         AdminMyAccountTabScreen()
