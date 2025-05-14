@@ -1,6 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fruitmarket/common/color_extension.dart';
+import 'package:fruitmarket/common/common_extension.dart';
+import 'package:fruitmarket/common/globs.dart';
+import 'package:fruitmarket/common/service_call.dart';
 
 class AdminDashboardTabScreen extends StatefulWidget {
   const AdminDashboardTabScreen({super.key});
@@ -14,21 +17,35 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
   List dataArr = [
     {
       "name": "Total Orders",
-      "value": "3000",
+      "key": "order",
+      "symbol": "",
     },
     {
       "name": "Revenue",
-      "value": "\$240.0",
+      "key": "revenue",
+      "symbol": "\$",
     },
     {
       "name": "Active Deliveries",
-      "value": "150",
+      "key": "active_delivery",
+      "symbol": "",
     },
     {
       "name": "New Customers",
-      "value": "4000",
+      "key": "new_customer",
+      "symbol": "",
     }
   ];
+
+  Map dashObj = {};
+  List newCustomerArr = [];
+  List orderArr = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiCallingList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +85,12 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FittedBox(
                           fit: BoxFit.cover,
                           child: Text(
-                            obj["value"].toString() ,
+                            "${obj["symbol"].toString()}${dashObj[obj["key"].toString()]}",
                             style: TextStyle(
                               color: TColor.primary,
                               fontSize: 35,
@@ -83,7 +99,6 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
                           ),
                         ),
                       ),
-
                       Text(
                         obj["name"].toString(),
                         style: TextStyle(
@@ -134,8 +149,6 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
         borderData: borderData,
         lineBarsData: lineBarsData1,
         minX: 0,
-        maxX: 14,
-        maxY: 4,
         minY: 0,
       );
 
@@ -165,7 +178,6 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
   List<LineChartBarData> get lineBarsData1 => [
         lineChartBarData1_1,
         lineChartBarData1_2,
-        lineChartBarData1_3,
       ];
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
@@ -173,31 +185,11 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
       fontWeight: FontWeight.bold,
       fontSize: 14,
     );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '1m';
-        break;
-      case 2:
-        text = '2m';
-        break;
-      case 3:
-        text = '3m';
-        break;
-      case 4:
-        text = '5m';
-        break;
-      case 5:
-        text = '6m';
-        break;
-      default:
-        return Container();
-    }
 
     return SideTitleWidget(
       meta: meta,
       child: Text(
-        text,
+        value.round().toString(),
         style: style,
         textAlign: TextAlign.center,
       ),
@@ -213,29 +205,36 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      fontWeight: FontWeight.bold,
       fontSize: 16,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('SEPT', style: style);
-        break;
-      case 7:
-        text = const Text('OCT', style: style);
-        break;
-      case 12:
-        text = const Text('DEC', style: style);
-        break;
-      default:
-        text = const Text('');
-        break;
-    }
+
+    
+
+
+
+    var date =   newCustomerArr[ value.toInt() ]["date"].toString().displayDate(displayFormat: "d");
+
+    // if (value.toInt() % )
+
+    // switch (value.toInt()) {
+    //   case 2:
+    //     text = const Text('SEPT', style: style);
+    //     break;
+    //   case 7:
+    //     text = const Text('OCT', style: style);
+    //     break;
+    //   case 12:
+    //     text = const Text('DEC', style: style);
+    //     break;
+    //   default:
+    //     text = const Text('');
+    //     break;
+    // }
 
     return SideTitleWidget(
       meta: meta,
       space: 10,
-      child: text,
+      child: value.toInt() % 3 == 0 ? Text(date, style: style) : const Text(''),
     );
   }
 
@@ -262,56 +261,78 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
   LineChartBarData get lineChartBarData1_1 => LineChartBarData(
         isCurved: true,
         color: Color(0xFF3BFF49),
-        barWidth: 8,
+        barWidth: 4,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 1.5),
-          FlSpot(5, 1.4),
-          FlSpot(7, 3.4),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
+        spots: getOrderSpot(),
       );
 
   LineChartBarData get lineChartBarData1_2 => LineChartBarData(
         isCurved: true,
         color: Color(0xFFFF3AF2),
-        barWidth: 8,
+        barWidth: 4,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(
           show: false,
           color: Color(0xFFFF3AF2).withValues(alpha: 0),
         ),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
+        spots: getCustomerSpot(),
       );
 
-  LineChartBarData get lineChartBarData1_3 => LineChartBarData(
-        isCurved: true,
-        color: Color(0xFF50E4FF),
-        barWidth: 8,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 2.8),
-          FlSpot(3, 1.9),
-          FlSpot(6, 3),
-          FlSpot(10, 1.3),
-          FlSpot(13, 2.5),
-        ],
-      );
+  //TODO: Action
+
+  List<FlSpot> getOrderSpot() {
+    var i = -1;
+    var orArr = orderArr.map((obj) {
+      i += 1;
+      return FlSpot(i.toDouble(), double.tryParse(obj["orders"].toString()) ?? 0.0);
+    });
+
+    return orArr.toList();
+  }
+
+  List<FlSpot> getCustomerSpot() {
+    var i = -1;
+    var arr = newCustomerArr.map((obj) {
+      i += 1;
+      return FlSpot(i.toDouble(), double.tryParse(obj["new_customer"].toString()) ?? 0.0);
+    });
+
+    return arr.toList();
+  }
 
   //TODO: End Chat
+
+  //TODO: ApiCalling
+  void apiCallingList() {
+    Globs.showHUD();
+
+    ServiceCall.post(
+      {},
+      SVKey.adminDashboard,
+      isTokenApi: true,
+      withSuccess: (responseObj) async {
+        Globs.hideHUD();
+        if (responseObj[KKey.status] == "1") {
+          dashObj = responseObj[KKey.payload] as Map? ?? {};
+          var chartObj = dashObj["chart"] as Map? ?? {};
+          newCustomerArr = chartObj["customer_info"] as List? ?? [];
+          orderArr = chartObj["order_info"] as List? ?? [];
+
+          if (mounted) {
+            setState(() {});
+          }
+        } else {
+          mdShowAlert(
+              Globs.appName, responseObj[KKey.message].toString(), () {});
+        }
+      },
+      failure: (error) async {
+        Globs.hideHUD();
+        mdShowAlert(Globs.appName, error.toString(), () {});
+      },
+    );
+  }
 }
