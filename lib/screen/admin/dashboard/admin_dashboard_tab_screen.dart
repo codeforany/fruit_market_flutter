@@ -208,28 +208,9 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
       fontSize: 16,
     );
 
-    
-
-
-
-    var date =   newCustomerArr[ value.toInt() ]["date"].toString().displayDate(displayFormat: "d");
-
-    // if (value.toInt() % )
-
-    // switch (value.toInt()) {
-    //   case 2:
-    //     text = const Text('SEPT', style: style);
-    //     break;
-    //   case 7:
-    //     text = const Text('OCT', style: style);
-    //     break;
-    //   case 12:
-    //     text = const Text('DEC', style: style);
-    //     break;
-    //   default:
-    //     text = const Text('');
-    //     break;
-    // }
+    var date = newCustomerArr.isEmpty ? "" : newCustomerArr[value.toInt()]["date"]
+        .toString()
+        .displayDate(displayFormat: "d");
 
     return SideTitleWidget(
       meta: meta,
@@ -287,7 +268,8 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
     var i = -1;
     var orArr = orderArr.map((obj) {
       i += 1;
-      return FlSpot(i.toDouble(), double.tryParse(obj["orders"].toString()) ?? 0.0);
+      return FlSpot(
+          i.toDouble(), double.tryParse(obj["orders"].toString()) ?? 0.0);
     });
 
     return orArr.toList();
@@ -297,7 +279,8 @@ class _AdminDashboardTabScreenState extends State<AdminDashboardTabScreen> {
     var i = -1;
     var arr = newCustomerArr.map((obj) {
       i += 1;
-      return FlSpot(i.toDouble(), double.tryParse(obj["new_customer"].toString()) ?? 0.0);
+      return FlSpot(
+          i.toDouble(), double.tryParse(obj["new_customer"].toString()) ?? 0.0);
     });
 
     return arr.toList();

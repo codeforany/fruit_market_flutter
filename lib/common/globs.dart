@@ -130,6 +130,7 @@ class SVKey {
   static const adminOfferDelete = '$baseUrl/admin/offer_delete';
 
   static const adminDashboard = '$baseUrl/admin/dashboard';
+  static const deliveryBoyDashboard = '$baseUrl/app/delivery_boy_dashboard';
 
   static const adminDeliveryBoyUserList =
       '$baseUrl/admin/delivery_boy_user_list';
